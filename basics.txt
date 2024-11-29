@@ -1,0 +1,9 @@
+pull - > docker pull stacksimplify/mynginx:v1
+list images - > docker images
+run - > docker run --name myapp1 -p 8080:80 -d stacksimplify/mynginx:v1
+list containers - > docker ps
+connect - > docker exec -it myapp1 /bin/sh
+start- > docker start <CONTAINER-NAME>
+stop - > docker stop <CONTAINER-NAME>
+remove - >docker rm <CONTAINER-NAME>
+remove image - >docker rmi <IMAGE-ID>
