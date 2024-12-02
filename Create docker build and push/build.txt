@@ -1,0 +1,3 @@
+docker build -t nginx-custom:v1 .
+docker tag nginx-custom:v1 sundarmax18/k8s_python_demo_code
+docker push sundarmax18/k8s_python_demo_cod
