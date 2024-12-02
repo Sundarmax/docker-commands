@@ -1,0 +1,27 @@
+Delete all images - > docker rmi $(docker images -q)
+# Change to the directory containing your Dockerfile
+cd Dockerfiles
+
+# Build the Docker image
+docker build -t [IMAGE-NAME]:[IMAGE-TAG] .
+
+# Example:
+docker build -t demo4-dockerfile-labels:v1 .
+
+# Important Notes:
+# 1. [IMAGE-TAG] is optional; if not provided, it defaults to "latest".
+# 2. Best practice is to use explicit tags.
+
+# List Docker Images
+docker images
+
+# Run the Docker container
+docker run --name mylabels-demo -p 8080:80 -d demo4-dockerfile-labels:v1
+
+# Access the application in your browser
+http://localhost:8080
+
+# verify the labels
+docker inspect --format='{{.Created}}' demo4-dockerfile-labels:v1
+
+docker inspect --format='{{.NetworkSettings.IPAddress}}' [CONTAINER-NAME or CONTAINER-ID]
