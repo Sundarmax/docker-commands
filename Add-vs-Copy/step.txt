@@ -1,0 +1,1 @@
+tar -czvf static_files.tar.gz index.html file1.html 
