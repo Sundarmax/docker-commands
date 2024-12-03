@@ -1,1 +1,19 @@
 tar -czvf static_files.tar.gz index.html file1.html 
+
+# Change Directory
+cd Dockerfiles
+
+# Build Docker Image
+docker build -t [IMAGE-NAME]:[IMAGE-TAG] .
+
+# Example:
+docker build -t demo5-dockerfile-add-vs-copy:v1 .
+
+# Run Docker Container and Verify
+docker run --name my-add-vs-copy-demo -p 8080:80 -d demo5-dockerfile-add-vs-copy:v1
+
+# List Static Files from Docker Container
+docker exec -it my-add-vs-copy-demo ls -lrta /usr/share/nginx/html
+
+# Access Application
+http://localhost:8080
