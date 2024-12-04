@@ -1,0 +1,17 @@
+# Change Directory
+cd Dockerfiles
+
+# Build Docker Image
+docker build -t [IMAGE-NAME]:[IMAGE-TAG] .
+
+# Example:
+docker build -t demo6-dockerfile-add-fetch-url:v1 .
+
+# Run Docker Container and Verify
+docker run --name my-add-fetch-url-demo -p 8080:80 -d demo6-dockerfile-add-fetch-url:v1
+
+# List Static Files from Docker Container
+docker exec -it my-add-fetch-url-demo ls -l /usr/share/nginx/html
+
+# Access Application
+http://localhost:8080
