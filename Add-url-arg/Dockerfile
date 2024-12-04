@@ -1,4 +1,6 @@
-FROM nginx:alpine-slim
+ARG NGINX_VERS=1.26
+
+FROM nginx:${NGINX_VERS}-alpine-slim
 
 LABEL org.opencontainers.image.authors="Sundar"
 

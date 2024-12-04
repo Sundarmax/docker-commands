@@ -15,3 +15,10 @@ docker exec -it my-add-fetch-url-demo ls -l /usr/share/nginx/html
 
 # Access Application
 http://localhost:8080
+
+# Verify Nginx version inside the container
+docker exec -it my-arg-demo1 nginx -v
+
+# override the ARG value during build
+
+docker build --build-arg NGINX_VERSION=1.27 -t demo7-dockerfile-arg:v1.27 .
