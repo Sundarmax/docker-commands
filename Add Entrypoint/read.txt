@@ -1,0 +1,9 @@
+# Change to the directory containing your Dockerfile
+cd DockerFiles
+
+# Build the Docker Image
+docker build -t demo11-dockerfile-entrypoint:v1 .
+
+# Run Docker Container and Verify
+docker run --name my-entrypoint-demo1 demo11-dockerfile-entrypoint:v1
+
