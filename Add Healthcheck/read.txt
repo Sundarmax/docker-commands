@@ -1,0 +1,27 @@
+# Change to the directory containing your Dockerfile
+cd DockerFiles
+
+# Build the Docker Image
+docker build -t demo12-dockerfile-healthcheck:v1 .
+
+# Inspect the Docker Image
+docker image inspect demo12-dockerfile-healthcheck:v1
+
+# Inspect the Healthcheck settings of the Docker Image
+docker image inspect --format='{{json .Config.Healthcheck}}' demo12-dockerfile-healthcheck:v1
+
+# Run the Docker Container
+docker run --name my-healthcheck-demo -p 8080:80 -d demo12-dockerfile-healthcheck:v1
+
+# List Docker Containers
+docker ps
+
+# Expected Output:
+# CONTAINER ID   IMAGE                             COMMAND                  CREATED          STATUS                    PORTS                  NAMES
+# e63e7fe79986   demo12-dockerfile-healthcheck:v1  "/docker-entrypoint.…"   17 seconds ago   Up 15 seconds (healthy)   0.0.0.0:8080->80/tcp   my-healthcheck-demo
+
+# Inspect the health status of the container
+docker inspect --format='{{json .State.Health}}' my-healthcheck-demo
+
+# Access the application in your browser
+http://localhost:8080
