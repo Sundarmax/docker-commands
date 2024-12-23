@@ -1,0 +1,15 @@
+# create a new volume
+docker volume create testvol
+
+# run
+docker run --name volume-demo1 -p 8090:80 --mount type=volume,source=myvol101,target=/myapps -d nginx:alpine-slim
+
+# connect to container 
+docker exec -it volume-demo1 /bin/sh
+
+# check the mounted volume
+df -h
+
+# inspect
+docker inspect --format='{{json .Mounts}}' volume-demo1 | jq
+
