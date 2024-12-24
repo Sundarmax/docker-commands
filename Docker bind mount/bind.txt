@@ -1,0 +1,10 @@
+# run
+docker run --name bind-demo1 -p 8091:80 --mount type=bind,source=/home/sundar,target=/linkfs -d nginx:alpine-slim  
+
+# Readable Multi-Line Format
+docker run \
+  --name bind-demo1 \
+  -p 8091:80 \
+  --mount type=bind,source="$(pwd)"/static-content,target=/usr/share/nginx/html \
+  -d \
+  nginx:alpine-slim  
