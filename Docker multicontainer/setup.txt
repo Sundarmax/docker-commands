@@ -1,0 +1,41 @@
+# mysql container setup
+# List existing Docker networks
+docker network ls
+
+# Create a new Docker network for the multi-container application
+docker network create ums-app
+
+# List networks to verify the creation of the new network
+docker network ls
+
+# List any existing Docker containers
+docker ps
+docker ps -a
+
+# Create and run the MySQL container
+docker run -d \
+    --network ums-app --network-alias mysql \
+    --name ums-mysqldb \
+    -v ums-mysql-data:/var/lib/mysql \
+    -e MYSQL_ROOT_PASSWORD=dbpassword11 \
+    -e MYSQL_DATABASE=webappdb \
+    -p 3306:3306 \
+    mysql:8.0
+
+# UMS container app that connects to db container in the same network ("ums-app")
+
+# Pull the User Management WebApp image
+docker pull ghcr.io/stacksimplify/usermgmt-webapp-v6:latest
+
+# Run the WebApp container and link it to the MySQL container
+docker run -d \
+    --network ums-app \
+    --name ums-app \
+    -e DB_HOSTNAME=mysql \
+    -e DB_PORT=3306 \
+    -e DB_NAME=webappdb \
+    -e DB_USERNAME=root \
+    -e DB_PASSWORD=dbpassword11 \
+    -p 8080:8080 \
+    ghcr.io/stacksimplify/usermgmt-webapp-v6:latest
+
