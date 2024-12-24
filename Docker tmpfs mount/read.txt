@@ -1,0 +1,41 @@
+# run container with tmpfs mount.
+docker run --name tmpfs-demo --mount type=tmpfs,destination=/app -d ngix:alpine-slim
+
+# verify the mount
+
+# Connect to the container
+docker exec -it tmpfs-demo /bin/sh
+
+# Inside the container: Check disk usage to confirm tmpfs mount
+df -h | grep /app
+
+# Navigate to the tmpfs mount directory
+cd /app
+ls
+
+# Create sample files within the tmpfs mount
+echo "file1 content" > file1.html
+echo "file2 content" > file2.html
+ls
+
+# Exit the container shell
+exit
+
+# Stop the Docker container
+docker stop tmpfs-demo
+
+# Start the Docker container again
+docker start tmpfs-demo
+
+# Reconnect to the container
+docker exec -it tmpfs-demo /bin/sh
+
+# Inside the container: Verify the tmpfs mount contents
+df -h | grep /app
+cd /app
+ls
+exit
+
+# Observation:
+# 1. The /app directory is empty after restarting the container.
+# 2. Files created inside the tmpfs mount do not persist across container restarts.
