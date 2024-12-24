@@ -39,3 +39,8 @@ exit
 # Observation:
 # 1. The /app directory is empty after restarting the container.
 # 2. Files created inside the tmpfs mount do not persist across container restarts.
+
+# Observation:
+# 1. The /app directory is empty after restarting the container.
+# 2. Files created inside the tmpfs mount do not persist across container restarts.
+
