@@ -1,0 +1,106 @@
+# Verify any existing volumes present
+docker volume ls
+
+# Single Line Format: Using --mount option with volume location in container as /usr/share/nginx/html
+docker run --name nonemtpydir-volume-demo -p 8096:80 --mount type=volume,source=myvol103,target=/usr/share/nginx/html -d mynginx-nonemptydir:v1
+
+# Readable Format: Using --mount option with volume location in container as /usr/share/nginx/html
+docker run \
+    --name nonemtpydir-volume-demo \
+    -p 8096:80 \
+    --mount type=volume,source=myvol103,target=/usr/share/nginx/html \
+    -d \
+    mynginx-nonemptydir:v1
+
+# List Docker Containers
+docker ps
+docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}\t{{.ID}}\t{{.Ports}}"
+
+# Connect to Container and verify
+docker exec -it nonemtpydir-volume-demo /bin/sh
+
+# Run commands inside container
+df -h
+cd /usr/share/nginx/html
+ls
+exit
+Observation:
+1. We should see a new docker volume mount created in container
+2. Whatever earlier present "/usr/share/nginx/html" from docker image copied successfully to Docker Volume mounted in container at path "/usr/share/nginx/html"
+3. NO DATA LOSS
+4. THIS IS THE GREATEST ADVANTAGE
+
+# Inspect Docker Container
+docker inspect volume-demo1
+docker inspect --format='{{json .Mounts}}' nonemtpydir-volume-demo
+docker inspect --format='{{json .Mounts}}' nonemtpydir-volume-demo | jq
+
+# Access Application
+http://localhost:8096
+Observation:
+1. We have all our static content present and accessible
+
+# Review Volume in Docker Desktop
+1. Go to Docker Desktop
+2. Firstly we will find that content is present myvol103 (Size: 2.7KB) 
+3. Go to myvol103
+- Review Stored Data tab: We will find all content in that volume
+
+----------------------------------------------------------------------
+# Change Directory
+cd myfiles
+
+# Single line Format: Using --mount option with type=bind and target location in container as /usr/share/nginx/html
+docker run --name nonemtpydir-bind-demo -p 8097:80 --mount type=bind,source="$(pwd)"/static-content,target=/usr/share/nginx/html -d nginx:alpine-slim  
+
+# Readable Format: Using --mount option with type=bind and target location in container as /usr/share/nginx/html
+docker run \
+  --name nonemtpydir-bind-demo \
+  -p 8097:80 \
+  --mount type=bind,source="$(pwd)"/static-content,target=/usr/share/nginx/html \
+  -d \
+  mynginx-nonemptydir:v1
+
+# List Docker Containers
+docker ps
+docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}\t{{.ID}}\t{{.Ports}}"
+
+# Connect to Container and verify
+docker exec -it nonemtpydir-bind-demo /bin/sh
+
+# Run commands inside container
+df -h
+cd /usr/share/nginx/html
+ls
+exit
+
+### SAMPLE OUTPUT
+/usr/share/nginx/html # ls
+local1.html
+/usr/share/nginx/html # 
+
+Observation: 
+1. All data present inside container at location "/usr/share/nginx/html" is obscured
+2. Only content from local directory from HOST_MACHINE is present in "/usr/share/nginx/html"
+3. This can be beneficial, such as when you want to test a new version of your application without building a new image, just by creating new container and updated code bind mount for that container
+4. VERY IMPORTANT NOTE: We should be very careful when mounting Bind Mounts to non-emtpy directories in a container, else it would take down our application
+5. Pros and cons will be completely based on the usecase we are using in our organization
+
+
+# Access Application
+http://localhost:8097/local1.html
+Observation:
+1. We have all our static content present from HOST MACHINE and accessible
+2. File system is READ-WRITE
+
+
+# Inspect Docker Container
+docker inspect nonemtpydir-bind-demo
+docker inspect --format='{{json .Mounts}}' nonemtpydir-bind-demo
+docker inspect --format='{{json .Mounts}}' nonemtpydir-bind-demo | jq  
+
+# Verify using Docker Desktop
+Go to Docker Desktop -> Containers -> nonemtpydir-bind-demo -> TABS
+1. Bind Mounts
+2. Files: /usr/share/nginx/html
+3. Exec: df -h
