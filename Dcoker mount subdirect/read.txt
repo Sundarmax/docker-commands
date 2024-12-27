@@ -1,0 +1,10 @@
+# Single-Line Format
+docker run --name volume-demo6 -p 8096:80 --mount type=volume,source=myvol101,target=/usr/share/nginx/html/app1,volume-subpath=app1 -d nginx:alpine-slim
+
+# Readable Multi-Line Format
+docker run \
+    --name volume-demo6 \
+    -p 8096:80 \
+    --mount type=volume,source=myvol103,target=/usr/share/nginx/html/app1,volume-subpath=app1 \
+    -d \
+    nginx:alpine-slim
