@@ -1,0 +1,21 @@
+
+# BUILD EVERYTIME WHEN YOU MAKE CODING CHANGES
+
+# Change Directory
+cd build-demo
+
+# Pull Docker Images and Start Containers
+docker compose up --build -d 
+
+# List Docker Containers
+docker compose ps
+
+# List Docker Images
+docker images
+Observation:
+1. Verify the Docker image "CREATED" section
+
+# Access Application
+http://localhost:5000
+Observation:
+1. V1 version of application displayed
